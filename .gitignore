@@ -1,0 +1,52 @@
+# Go build artifacts
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+
+# Output binary
+/tmp/
+/.air-bin/
+/build/
+/dist/
+
+# Dependency directories (go mod handles this)
+vendor/
+
+# Go workspace file
+go.work
+go.work.sum
+
+# IDE/editor settings
+.vscode/
+.idea/
+*.swp
+*.swo
+*.bak
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# Logs and debug
+*.log
+
+# dotenv
+.env
+
+# Air temporary files
+.air
+.air.toml
+build-errors.log
+
+# Docker
+**/node_modules/
+docker-compose.override.yml
+
+bin
+
+
+public
