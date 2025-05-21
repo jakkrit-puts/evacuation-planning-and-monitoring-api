@@ -7,6 +7,7 @@ import (
 
 type EvacuationZoneRepository interface {
 	Create(evacuationZone models.EvacuationZone) (models.EvacuationZone, error)
+	FindUrgentZones() ([]models.EvacuationZone, error)
 }
 
 type evacuationZoneRepository struct {
@@ -23,4 +24,11 @@ func (r *evacuationZoneRepository) Create(evacuationZone models.EvacuationZone) 
 	}
 
 	return evacuationZone, nil
+}
+
+func (r *evacuationZoneRepository) FindUrgentZones() ([]models.EvacuationZone, error) {
+	var zones []models.EvacuationZone
+
+	err := r.db.Where("number_of_people > 0").Order("urgency_level DESC").Find(&zones).Error
+	return zones, err
 }

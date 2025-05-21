@@ -24,3 +24,7 @@ Content-Type: application/json
     "LocationCoordinates": { "latitude": 14.7567, "longitude": 100.1321 },
     "Speed": 70
 }
+
+### POST /api/evacuations
+POST {{BASE_API}}/evacuations/plan
+Content-Type: application/json

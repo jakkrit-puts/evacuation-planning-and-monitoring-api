@@ -7,6 +7,7 @@ import (
 
 type EvacuationZoneService interface {
 	CreateEvacuationZone(evacuationZone models.EvacuationZone) (models.EvacuationZone, error)
+	GetUrgentZones() ([]models.EvacuationZone, error)
 }
 
 type evacuationZoneService struct {
@@ -19,4 +20,8 @@ func NewEvacuationZoneService(evacuationZoneRepository repositories.EvacuationZo
 
 func (s *evacuationZoneService) CreateEvacuationZone(evacuationZone models.EvacuationZone) (models.EvacuationZone, error) {
 	return s.evacuationZoneRepository.Create(evacuationZone)
+}
+
+func (s *evacuationZoneService) GetUrgentZones() ([]models.EvacuationZone, error) {
+	return s.evacuationZoneRepository.FindUrgentZones()
 }

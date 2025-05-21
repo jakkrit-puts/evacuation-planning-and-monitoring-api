@@ -7,6 +7,7 @@ import (
 
 type VehicleService interface {
 	CreateVehicle(vehicle models.Vehicle) (models.Vehicle, error)
+	GetVehicles() ([]models.Vehicle, error)
 }
 
 type vehicleService struct {
@@ -20,4 +21,7 @@ func NewVehicleService(vehicleRepository repositories.VehicleRepository) Vehicle
 func (s *vehicleService) CreateVehicle(vehicle models.Vehicle) (models.Vehicle, error) {
 	return s.vehicleRepository.Create(vehicle)
 }
-    
+
+func (s *vehicleService) GetVehicles() ([]models.Vehicle, error) {
+	return s.vehicleRepository.FindAll()
+}

@@ -7,6 +7,7 @@ import (
 
 type VehicleRepository interface {
 	Create(vehicle models.Vehicle) (models.Vehicle, error)
+	FindAll() ([]models.Vehicle, error)
 }
 
 type vehicleRepository struct {
@@ -23,4 +24,13 @@ func (r *vehicleRepository) Create(vehicle models.Vehicle) (models.Vehicle, erro
 	}
 
 	return vehicle, nil
+}
+
+func (r *vehicleRepository) FindAll() ([]models.Vehicle, error) {
+	var vehicles []models.Vehicle
+	if err := r.db.Find(&vehicles).Error; err != nil {
+		return []models.Vehicle{}, err
+	}
+
+	return vehicles, nil
 }
