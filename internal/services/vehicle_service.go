@@ -6,7 +6,7 @@ import (
 )
 
 type VehicleService interface {
-	CreateVehicle(brand models.Vehicle) (models.Vehicle, error)
+	CreateVehicle(vehicle models.Vehicle) (models.Vehicle, error)
 }
 
 type vehicleService struct {

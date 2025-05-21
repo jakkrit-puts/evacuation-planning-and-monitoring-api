@@ -1,0 +1,26 @@
+@BASE_API=http://localhost:8081/api
+
+
+### POST /api/evacuation-zones
+POST {{BASE_API}}/evacuation-zones
+Content-Type: application/json
+
+{
+    "ZoneID": "Z4",
+    "LocationCoordinates": { "latitude": 14.7567, "longitude": 100.1321 },
+    "NumberOfPeople": 5,
+    "UrgencyLevel": 1
+}
+
+
+### POST /api/vehicles
+POST {{BASE_API}}/vehicles
+Content-Type: application/json
+
+{
+    "VehicleID": "V2",
+    "Capacity": 70,
+    "Type": "bus",  
+    "LocationCoordinates": { "latitude": 14.7567, "longitude": 100.1321 },
+    "Speed": 70
+}

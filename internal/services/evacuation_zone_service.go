@@ -6,14 +6,14 @@ import (
 )
 
 type EvacuationZoneService interface {
-	CreateEvacuationZone(brand models.EvacuationZone) (models.EvacuationZone, error)
+	CreateEvacuationZone(evacuationZone models.EvacuationZone) (models.EvacuationZone, error)
 }
 
 type evacuationZoneService struct {
 	evacuationZoneRepository repositories.EvacuationZoneRepository
 }
 
-func NewBrandService(evacuationZoneRepository repositories.EvacuationZoneRepository) EvacuationZoneService {
+func NewEvacuationZoneService(evacuationZoneRepository repositories.EvacuationZoneRepository) EvacuationZoneService {
 	return &evacuationZoneService{evacuationZoneRepository}
 }
 
