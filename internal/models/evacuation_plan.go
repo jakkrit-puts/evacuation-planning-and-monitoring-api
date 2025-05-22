@@ -1,7 +1,7 @@
 package models
 
 type EvacuationPlan struct {
-	ZoneID         string `gorm:"not null" json:"ZoneID"`
+	ZoneID         string `gorm:"primaryKey;not null" json:"ZoneID"`
 	VehicleID      string `gorm:"not null" json:"VehicleID"`
 	NumberOfPeople int    `gorm:"not null" json:"NumberOfPeople"`
 	ETA            string `gorm:"not null" json:"ETA"`

@@ -25,6 +25,10 @@ Content-Type: application/json
     "Speed": 30
 }
 
-### POST /api/evacuations
+### POST /api/evacuations/plan
 POST {{BASE_API}}/evacuations/plan
+Content-Type: application/json
+
+### POST /api/evacuations/status
+GET {{BASE_API}}/evacuations/status
 Content-Type: application/json

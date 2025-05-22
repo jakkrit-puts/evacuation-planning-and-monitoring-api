@@ -10,12 +10,14 @@ import (
 
 type EvacuationPlanHandler interface {
 	GeneratesPlan(c *fiber.Ctx) error
+	GetEvacuationStatus(c *fiber.Ctx) error
 }
 
 type evacuationPlanHandler struct {
-	evacuationPlanService services.EvacuationPlanService
-	evacuationZoneService services.EvacuationZoneService
-	vehicleService        services.VehicleService
+	evacuationPlanService   services.EvacuationPlanService
+	evacuationZoneService   services.EvacuationZoneService
+	vehicleService          services.VehicleService
+	evacuationStatusService services.EvacuationStatusService
 }
 
 func NewEvacuationPlanHandler(
@@ -23,14 +25,17 @@ func NewEvacuationPlanHandler(
 	evacuationPlanService services.EvacuationPlanService,
 	evacuationZoneService services.EvacuationZoneService,
 	vehicleService services.VehicleService,
+	evacuationStatusService services.EvacuationStatusService,
 ) EvacuationPlanHandler {
 	handler := &evacuationPlanHandler{
-		evacuationPlanService: evacuationPlanService,
-		evacuationZoneService: evacuationZoneService,
-		vehicleService:        vehicleService,
+		evacuationPlanService:   evacuationPlanService,
+		evacuationZoneService:   evacuationZoneService,
+		vehicleService:          vehicleService,
+		evacuationStatusService: evacuationStatusService,
 	}
 
 	router.Post("/plan", handler.GeneratesPlan)
+	router.Get("/status", handler.GetEvacuationStatus)
 
 	return handler
 }
@@ -76,4 +81,15 @@ func (h *evacuationPlanHandler) GeneratesPlan(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(savedPlans)
+}
+
+func (h *evacuationPlanHandler) GetEvacuationStatus(c *fiber.Ctx) error {
+	statuses, err := h.evacuationStatusService.GetEvacuationStatusList()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"error": err.Error(),
+		})
+	}
+
+	return c.JSON(statuses)
 }

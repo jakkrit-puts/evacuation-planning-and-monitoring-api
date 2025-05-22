@@ -23,14 +23,16 @@ func main() {
 	evacuationZoneRepository := repositories.NewEvacuationZoneRepository(db)
 	vehicleRepository := repositories.NewVehicleRepository(db)
 	evacuationPlanRepository := repositories.NewEvacuationPlanRepository(db)
+	evacuationStatusRepository := repositories.NewEvacuationStatusRepository(db)
 
 	evacuationZoneService := services.NewEvacuationZoneService(evacuationZoneRepository)
 	vehicleService := services.NewVehicleService(vehicleRepository)
 	evacuationPlanService := services.NewEvacuationPlanService(evacuationPlanRepository)
+	evacuationStatusService := services.NewEvacuationStatusService(evacuationStatusRepository)
 
 	handlers.NewEvacuationZoneHandler(server.Group("/evacuation-zones"), evacuationZoneService)
 	handlers.NewVehicleHandler(server.Group("/vehicles"), vehicleService)
-	handlers.NewEvacuationPlanHandler(server.Group("/evacuations"), evacuationPlanService, evacuationZoneService, vehicleService)
+	handlers.NewEvacuationPlanHandler(server.Group("/evacuations"), evacuationPlanService, evacuationZoneService, vehicleService, evacuationStatusService)
 
 	app.Listen(fmt.Sprintf(":%s", config.AppPort))
 
