@@ -127,3 +127,8 @@ $4
 PXAT
 $13
 1747931510396
+*2
+$3
+DEL
+$28
+handler::GetEvacuationStatus
