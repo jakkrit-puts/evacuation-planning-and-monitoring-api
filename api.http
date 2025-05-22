@@ -38,7 +38,7 @@ PUT {{BASE_API}}/evacuations/update
 Content-Type: application/json
 
 {
-  "ZoneID": "Z3",
+  "ZoneID": "Z2",
   "VehicleID": "V2",
   "PeopleMoved": 20
 }
