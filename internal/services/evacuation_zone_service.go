@@ -9,6 +9,7 @@ type EvacuationZoneService interface {
 	CreateEvacuationZone(evacuationZone models.EvacuationZone) (models.EvacuationZone, error)
 	GetUrgentZones() ([]models.EvacuationZone, error)
 	FindZoneByID(id string) (models.EvacuationZone, error)
+	FindAll() ([]models.EvacuationZone, error)
 }
 
 type evacuationZoneService struct {
@@ -29,4 +30,8 @@ func (s *evacuationZoneService) GetUrgentZones() ([]models.EvacuationZone, error
 
 func (s *evacuationZoneService) FindZoneByID(id string) (models.EvacuationZone, error) {
 	return s.evacuationZoneRepository.FindZoneByID(id)
+}
+
+func (s *evacuationZoneService) FindAll() ([]models.EvacuationZone, error) {
+	return s.evacuationZoneRepository.FindAll()
 }

@@ -33,7 +33,7 @@ Content-Type: application/json
 GET {{BASE_API}}/evacuations/status
 Content-Type: application/json
 
-### PUT /api/evacuations/status
+### PUT /api/evacuations/update
 PUT {{BASE_API}}/evacuations/update
 Content-Type: application/json
 
@@ -42,3 +42,7 @@ Content-Type: application/json
   "VehicleID": "V2",
   "PeopleMoved": 20
 }
+
+### DELETE /api/evacuations/clear
+DELETE {{BASE_API}}/evacuations/clear
+Content-Type: application/json

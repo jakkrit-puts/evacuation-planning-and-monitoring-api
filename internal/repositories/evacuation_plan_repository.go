@@ -8,6 +8,7 @@ import (
 type EvacuationPlanRepository interface {
 	Create(evacuationPlan models.EvacuationPlan) (models.EvacuationPlan, error)
 	CheckExists(zoneID string, vehicleID string) (bool, error)
+	DeleteAll() error
 }
 
 type evacuationPlanRepository struct {
@@ -35,4 +36,8 @@ func (r *evacuationPlanRepository) CheckExists(zoneID string, vehicleID string) 
 		return false, err
 	}
 	return count > 0, nil
+}
+
+func (r *evacuationPlanRepository) DeleteAll() error {
+	return r.db.Exec("DELETE FROM evacuation_plans").Error
 }

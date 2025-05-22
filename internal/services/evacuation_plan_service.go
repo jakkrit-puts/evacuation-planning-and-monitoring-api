@@ -13,6 +13,7 @@ import (
 type EvacuationPlanService interface {
 	CreateEvacuationPlan(evacuationPlan models.EvacuationPlan) (models.EvacuationPlan, error)
 	GenerateEvacuationPlan(zones []models.EvacuationZone, vehicles []models.Vehicle) []models.EvacuationPlanResponse
+	ClearPlan() error
 }
 
 type evacuationPlanService struct {
@@ -78,4 +79,8 @@ func (s *evacuationPlanService) GenerateEvacuationPlan(zones []models.Evacuation
 	}
 
 	return plans
+}
+
+func (s *evacuationPlanService) ClearPlan() error {
+	return s.evacuationPlanRepository.DeleteAll()
 }

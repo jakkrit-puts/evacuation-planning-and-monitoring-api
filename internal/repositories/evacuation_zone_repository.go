@@ -13,6 +13,7 @@ type EvacuationZoneRepository interface {
 	FindUrgentZones() ([]models.EvacuationZone, error)
 	FindZoneByID(id string) (models.EvacuationZone, error)
 	CheckExists(id string) (bool, error)
+	FindAll() ([]models.EvacuationZone, error)
 }
 
 type evacuationZoneRepository struct {
@@ -60,4 +61,13 @@ func (r *evacuationZoneRepository) CheckExists(id string) (bool, error) {
 		return false, err
 	}
 	return count > 0, nil
+}
+
+func (r *evacuationZoneRepository) FindAll() ([]models.EvacuationZone, error) {
+	var evacuationZones []models.EvacuationZone
+	if err := r.db.Find(&evacuationZones).Error; err != nil {
+		return []models.EvacuationZone{}, err
+	}
+
+	return evacuationZones, nil
 }

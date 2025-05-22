@@ -11,6 +11,8 @@ import (
 type EvacuationPlanHandler interface {
 	GeneratesPlan(c *fiber.Ctx) error
 	GetEvacuationStatus(c *fiber.Ctx) error
+	UpdateEvacuationStatus(c *fiber.Ctx) error
+	ClearEvacuations(c *fiber.Ctx) error
 }
 
 type evacuationPlanHandler struct {
@@ -37,6 +39,7 @@ func NewEvacuationPlanHandler(
 	router.Post("/plan", handler.GeneratesPlan)
 	router.Get("/status", handler.GetEvacuationStatus)
 	router.Put("/update", handler.UpdateEvacuationStatus)
+	router.Delete("/clear", handler.ClearEvacuations)
 
 	return handler
 }
@@ -147,5 +150,33 @@ func (h *evacuationPlanHandler) UpdateEvacuationStatus(c *fiber.Ctx) error {
 	return c.JSON(fiber.Map{
 		"message": "updated successfully",
 		"data":    result,
+	})
+}
+
+func (h *evacuationPlanHandler) ClearEvacuations(c *fiber.Ctx) error {
+	if err := h.evacuationPlanService.ClearPlan(); err != nil {
+		return err
+	}
+
+	zones, err := h.evacuationZoneService.FindAll()
+	if err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	for _, zone := range zones {
+		status := models.EvacuationStatus{
+			ZoneID:          zone.ZoneID,
+			TotalEvacuated:  0,
+			RemainingPeople: zone.NumberOfPeople,
+			LastVehicleUsed: nil,
+		}
+
+		h.evacuationStatusService.Update(status)
+	}
+
+	return c.JSON(fiber.Map{
+		"message": "clear successfully",
 	})
 }
