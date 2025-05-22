@@ -30,7 +30,7 @@ func main() {
 
 	handlers.NewEvacuationZoneHandler(server.Group("/evacuation-zones"), evacuationZoneService)
 	handlers.NewVehicleHandler(server.Group("/vehicles"), vehicleService)
-	handlers.NewEvacuationPlanHandler(server.Group("/evacuations"), evacuationPlanService)
+	handlers.NewEvacuationPlanHandler(server.Group("/evacuations"), evacuationPlanService, evacuationZoneService, vehicleService)
 
 	app.Listen(fmt.Sprintf(":%s", config.AppPort))
 

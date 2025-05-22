@@ -7,6 +7,7 @@ import (
 
 type EvacuationPlanRepository interface {
 	Create(evacuationPlan models.EvacuationPlan) (models.EvacuationPlan, error)
+	CheckExists(zoneID string, vehicleID string) (bool, error)
 }
 
 type evacuationPlanRepository struct {
@@ -23,4 +24,15 @@ func (r *evacuationPlanRepository) Create(evacuationPlan models.EvacuationPlan) 
 	}
 
 	return evacuationPlan, nil
+}
+
+func (r *evacuationPlanRepository) CheckExists(zoneID string, vehicleID string) (bool, error) {
+	var count int64
+	err := r.db.Model(&models.EvacuationPlan{}).
+		Where("zone_id = ? AND vehicle_id = ?", zoneID, vehicleID).
+		Count(&count).Error
+	if err != nil {
+		return false, err
+	}
+	return count > 0, nil
 }

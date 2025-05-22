@@ -1,13 +1,15 @@
 package models
 
-import (
-	"gorm.io/gorm"
-)
-
 type EvacuationPlan struct {
-	gorm.Model
-	ZoneID         string  `gorm:"not null" json:"zone_id"`
-	VehicleID      string  `gorm:"not null" json:"vehicle_id"`
-	NumberOfPeople int     `gorm:"not null" json:"number_of_people"`
-	ETA            float64 `gorm:"not null" json:"eta"`
+	ZoneID         string `gorm:"not null" json:"ZoneID"`
+	VehicleID      string `gorm:"not null" json:"VehicleID"`
+	NumberOfPeople int    `gorm:"not null" json:"NumberOfPeople"`
+	ETA            string `gorm:"not null" json:"ETA"`
+}
+
+type EvacuationPlanResponse struct {
+	ZoneID         string `json:"ZoneID"`
+	VehicleID      string `json:"VehicleID"`
+	NumberOfPeople int    `json:"NumberOfPeople"`
+	ETA            string `json:"ETA"`
 }

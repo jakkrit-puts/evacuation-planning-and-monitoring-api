@@ -6,8 +6,8 @@ POST {{BASE_API}}/evacuation-zones
 Content-Type: application/json
 
 {
-    "ZoneID": "Z4",
-    "LocationCoordinates": { "latitude": 14.7567, "longitude": 100.1321 },
+    "ZoneID": "Z6",
+    "LocationCoordinates": { "latitude": 16.436909150163707, "longitude": 102.83470331580656 },
     "NumberOfPeople": 5,
     "UrgencyLevel": 1
 }
@@ -18,11 +18,11 @@ POST {{BASE_API}}/vehicles
 Content-Type: application/json
 
 {
-    "VehicleID": "V2",
+    "VehicleID": "V4",
     "Capacity": 70,
     "Type": "bus",  
-    "LocationCoordinates": { "latitude": 14.7567, "longitude": 100.1321 },
-    "Speed": 70
+    "LocationCoordinates": { "latitude": 16.451480804122994, "longitude": 102.85557431093233 },
+    "Speed": 30
 }
 
 ### POST /api/evacuations
