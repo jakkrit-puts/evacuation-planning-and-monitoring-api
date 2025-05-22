@@ -13,3 +13,9 @@ type EvacuationPlanResponse struct {
 	NumberOfPeople int    `json:"NumberOfPeople"`
 	ETA            string `json:"ETA"`
 }
+
+type EvacuationUpdateInput struct {
+	ZoneID      string `json:"ZoneID"`
+	VehicleID   string `json:"VehicleID"`
+	PeopleMoved int    `json:"PeopleMoved"`
+}

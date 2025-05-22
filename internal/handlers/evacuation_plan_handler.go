@@ -36,6 +36,7 @@ func NewEvacuationPlanHandler(
 
 	router.Post("/plan", handler.GeneratesPlan)
 	router.Get("/status", handler.GetEvacuationStatus)
+	router.Put("/update", handler.UpdateEvacuationStatus)
 
 	return handler
 }
@@ -74,9 +75,22 @@ func (h *evacuationPlanHandler) GeneratesPlan(c *fiber.Ctx) error {
 
 		saved, err := h.evacuationPlanService.CreateEvacuationPlan(newPlan)
 		if err != nil {
-			fmt.Printf("failed to save plan: %+v, error: %v\n", p, err)
+			fmt.Printf("failed save plan: %v, error: %v\n", p, err)
 			continue
 		}
+
+		exists := h.evacuationStatusService.Exists(p.ZoneID)
+		if !exists {
+			zone, _ := h.evacuationZoneService.FindZoneByID(p.ZoneID)
+			status := models.EvacuationStatus{
+				ZoneID:          p.ZoneID,
+				TotalEvacuated:  0,
+				RemainingPeople: zone.NumberOfPeople,
+				LastVehicleUsed: nil,
+			}
+			_, _ = h.evacuationStatusService.CreateEvacuationStatus(status)
+		}
+
 		savedPlans = append(savedPlans, saved)
 	}
 
@@ -87,9 +101,51 @@ func (h *evacuationPlanHandler) GetEvacuationStatus(c *fiber.Ctx) error {
 	statuses, err := h.evacuationStatusService.GetEvacuationStatusList()
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
-			"error": err.Error(),
+			"message": err.Error(),
 		})
 	}
 
 	return c.JSON(statuses)
+}
+
+func (h *evacuationPlanHandler) UpdateEvacuationStatus(c *fiber.Ctx) error {
+	var input models.EvacuationUpdateInput
+	if err := c.BodyParser(&input); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"error": "Invalid input"})
+	}
+
+	if input.PeopleMoved <= 0 {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "PeopleMoved gt than 0",
+		})
+	}
+
+	status, err := h.evacuationStatusService.FindZoneByID(input.ZoneID)
+	if err != nil {
+		return c.Status(fiber.StatusNotFound).JSON(fiber.Map{
+			"message": err.Error(),
+		})
+	}
+
+	if input.PeopleMoved > status.RemainingPeople {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
+			"message": "PeopleMoved exceeds",
+		})
+	}
+
+	status.TotalEvacuated += input.PeopleMoved
+	status.RemainingPeople -= input.PeopleMoved
+	status.LastVehicleUsed = &input.VehicleID
+
+	result, errUpdate := h.evacuationStatusService.Update(status)
+	if errUpdate != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
+			"message": errUpdate.Error(),
+		})
+	}
+
+	return c.JSON(fiber.Map{
+		"message": "updated successfully",
+		"data":    result,
+	})
 }

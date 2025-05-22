@@ -6,10 +6,10 @@ POST {{BASE_API}}/evacuation-zones
 Content-Type: application/json
 
 {
-    "ZoneID": "Z6",
-    "LocationCoordinates": { "latitude": 16.436909150163707, "longitude": 102.83470331580656 },
-    "NumberOfPeople": 5,
-    "UrgencyLevel": 1
+    "ZoneID": "Z3",
+    "LocationCoordinates": { "latitude": 13.7367, "longitude": 100.5231 },
+    "NumberOfPeople": 100,
+    "UrgencyLevel": 4
 }
 
 
@@ -18,17 +18,27 @@ POST {{BASE_API}}/vehicles
 Content-Type: application/json
 
 {
-    "VehicleID": "V4",
+    "VehicleID": "V1",
     "Capacity": 70,
     "Type": "bus",  
     "LocationCoordinates": { "latitude": 16.451480804122994, "longitude": 102.85557431093233 },
-    "Speed": 30
+    "Speed": 50
 }
 
-### POST /api/evacuations/plan
+### POST /api/evacuations/plan -> Gen Plan
 POST {{BASE_API}}/evacuations/plan
 Content-Type: application/json
 
-### POST /api/evacuations/status
+### GET /api/evacuations/status
 GET {{BASE_API}}/evacuations/status
 Content-Type: application/json
+
+### PUT /api/evacuations/status
+PUT {{BASE_API}}/evacuations/update
+Content-Type: application/json
+
+{
+  "ZoneID": "Z3",
+  "VehicleID": "V2",
+  "PeopleMoved": 20
+}
